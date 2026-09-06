@@ -143,6 +143,67 @@ Two common patterns:
 Buyers hitting "Already activated on the maximum number of computers" should ask you to run
 `deactivate` on their old machine id (visible via `list`), or you raise their `maxDevices`.
 
+### Lemon Squeezy checkout webhook
+
+`webhook.mjs` is a ready-to-run endpoint for the Lemon Squeezy checkout flow: it verifies the
+HMAC-SHA256 signature on the raw request body, then issues a license key through
+`POST /admin/issue` and optionally emails the key to the buyer via the Lemon Squeezy API. It
+is a **separate process** so it can be the only thing exposed to the internet — the license
+server stays on localhost holding the private key, and the webhook only talks to it with a
+bearer token.
+
+Run it:
+
+```bash
+LEMONSQUEEZY_WEBHOOK_SECRET=<from Lemon Squeezy dashboard> \
+ADMIN_TOKEN=<same token the license server runs with> \
+LICENSE_SERVER_URL=http://127.0.0.1:8787 \
+node licensing/webhook.mjs
+```
+
+| Env | Default | Meaning |
+|---|---|---|
+| `PORT` / `HOST` | `8790` / `127.0.0.1` | listen address; set `HOST=0.0.0.0` behind a reverse proxy |
+| `LEMONSQUEEZY_WEBHOOK_SECRET` | *(required)* | the store's webhook signing secret |
+| `ADMIN_TOKEN` | *(required)* | the license server's admin token (must be set on the server too, or `/admin/*` is disabled) |
+| `LICENSE_SERVER_URL` | `http://127.0.0.1:8787` | base URL of the license server |
+| `ALLOWED_EVENTS` | `order_created` | comma-separated events that mint a key; anything else is acked but skipped |
+| `DEFAULT_PLAN` | `perpetual` | plan stored on each key |
+| `DEFAULT_MAX_DEVICES` | `1` | machines per key; a buyer can override with `custom_data.max_devices` |
+| `SUBSCRIPTION_DAYS` | `0` | key lifetime (0 = never expires) when a subscription event fires |
+| `LS_API_KEY` | *(unset)* | Lemon Squeezy Personal Access Token — enables emailing the key |
+| `ALLOW_TEST_MODE` | unset | set `1` to issue keys for Lemon Squeezy test events (normally skipped) |
+
+Setup steps:
+
+1. Run the license server with `ADMIN_TOKEN` set (see [Running the server](#running-the-server)).
+2. In the Lemon Squeezy dashboard (Settings → **Webhooks**) add an endpoint pointing at your
+   webhook URL (e.g. `https://your-domain.com/webhook`) with the **`order_created`** event
+   enabled, and copy the **signing secret** it shows you.
+3. Put that secret and the license server's `ADMIN_TOKEN` into the webhook's env and start it.
+4. Put it behind a TLS reverse proxy (Caddy, nginx, a PaaS) — only this process is public.
+5. Buyers get their key emailed automatically if `LS_API_KEY` is set; otherwise the key is
+   logged and delivered by hand.
+
+To check the wiring before going live, POST a hand-signed request:
+
+```bash
+SECRET=your-signing-secret
+BODY='{"meta":{"event_name":"order_created"},"data":{"id":"ord_1","attributes":{"customer_email":"a@b.com","order_number":1}}}'
+SIG=$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac "$SECRET" -hex | awk '{print $2}')
+curl -i -X POST http://127.0.0.1:8790/webhook \
+  -H 'Content-Type: application/vnd.api+json' \
+  -H "X-Event-Name: order_created" \
+  -H "X-Signature: $SIG" \
+  -d "$BODY"
+# -> 200 {"ok":true,"key":"XXXX-XXXX-XXXX-XXXX","email":"a@b.com"}
+```
+
+Subscriptions: to sell recurring plans, add `subscription_created,subscription_payment_success`
+to `ALLOWED_EVENTS` and set `SUBSCRIPTION_DAYS` (e.g. `31` for monthly). Each payment then mints
+a fresh time-limited key — for renewals, prefer a permanent key with `--max-devices 3` and have
+support `deactivate` old machines instead, so a long-time subscriber doesn't accumulate keys.
+
 ## Trials
 
 - First run with no license offers a 7-day trial (`license_start_trial`, stored by Rust in the
