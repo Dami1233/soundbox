@@ -27,15 +27,15 @@ portpicker = "0.1"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "gzip", "brotli", "deflate", "stream", "json"] }
-base64 = "0.22"
+base64 = "0.23"
 url = "2.5"
 keyring = { version = "3.6", features = ["apple-native", "windows-native", "sync-secret-service"] }
-discord-rich-presence = "0.2"
+discord-rich-presence = "1.1"
 tauri-plugin-updater = "2"
 tauri-plugin-process = "2"
 tauri-plugin-dialog = "2"
 md5 = "0.8.0"
-lofty = "0.24.0"
+lofty = "0.25.1"
 notify = "8.2.0"
 futures-util = "0.3.33"
 # Already in the tree via tauri; declared directly for `sleep` in the range-retry backoff
@@ -44,24 +44,24 @@ tokio = { version = "1", features = ["sync", "time"] }
 rodio = { version = "0.22.2", default-features = false, features = ["playback", "symphonia-all"] }
 # Demuxing only, and pinned to the version rodio already pulls so the binary carries one copy
 # of the Matroska/Ogg readers rather than two.
-symphonia = { version = "0.5", default-features = false, features = ["mkv", "ogg"] }
+symphonia = { version = "0.6", default-features = false, features = ["mkv", "ogg"] }
 # Verify-only Ed25519 for license envelopes: tiny, pure Rust, no_std-friendly.
 ed25519-compact = "2"
 # libopus, built from source via cmake. symphonia has no Opus decoder at all, and YouTube
 # serves Opus-in-WebM for the large majority of tracks at `high` — and as the *only* audio
 # offered for many of them, so preferring AAC is not an alternative.
-opus = "0.3.1"
+opus = "0.4.0"
 # Was macOS-only (the session encryption key); account slot ids need it on every platform now.
-rand = "0.8"
+rand = "0.10"
 
 [target.'cfg(target_os = "macos")'.dependencies]
-aes-gcm = "0.10"
+aes-gcm = "0.11"
 block2 = "0.6.2"
 objc2 = "0.6.4"
 objc2-foundation = { version = "0.3.2", features = ["NSData", "NSDictionary", "NSGeometry", "NSObject", "NSString", "NSValue", "objc2-core-foundation"] }
 
 [target.'cfg(target_os = "windows")'.dependencies]
-windows = { version = "0.61.3", features = [
+windows = { version = "0.62.2", features = [
   "Foundation",
   "Media",
   "Media_Playback",
@@ -78,5 +78,5 @@ windows = { version = "0.61.3", features = [
 ] }
 
 [target.'cfg(target_os = "linux")'.dependencies]
-souvlaki = "0.7"
+souvlaki = "0.8"
 
