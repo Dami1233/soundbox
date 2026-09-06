@@ -342,16 +342,15 @@ jobs:
     name: Publish to winget
     needs: [prepare, release]
     runs-on: ubuntu-latest
-    # `winget-releaser` only *bumps* a package that already exists in microsoft/winget-pkgs; it
-    # cannot create one. `noFAYZ.Zuno` has never been submitted, so every run so far has stopped
-    # at "Package noFAYZ.Zuno does not exist in the winget-pkgs repository" — nothing to do with
-    # the release itself, which published fine each time.
+    # Disabled for the Soundbox fork: this job would otherwise bump upstream's `noFAYZ.Zuno`
+    # package. To publish Soundbox to winget, first submit the one-off initial manifest PR to
+    # microsoft/winget-pkgs, then set the repository *variable* `WINGET_IDENTIFIER` (for
+    # example `Soundbox.Soundbox`). The job runs only when that variable is set.
     #
-    # The initial submission is a one-off PR to microsoft/winget-pkgs; the manifest for it lives
-    # in `manifests/`. This step starts working on its own once that PR is merged.
-    #
-    # Non-fatal until then. winget is one channel among several, and failing the whole release
-    # for it also meant the AUR publish — which chains off this workflow succeeding — never ran.
+    # winget-releaser only *bumps* a package that already exists in microsoft/winget-pkgs; it
+    # cannot create one. Keep this job non-fatal either way — winget is one channel among
+    # several, and failing the whole release for it also blocks the AUR publish downstream.
+    if: vars.WINGET_IDENTIFIER != ''
     continue-on-error: true
     env:
       RELEASE_TAG: ${{ needs.prepare.outputs.tag }}
@@ -372,7 +371,7 @@ jobs:
       - uses: vedantmgoyal9/winget-releaser@main
         if: steps.release_metadata.outputs.prerelease == 'false'
         with:
-          identifier: noFAYZ.Zuno
+          identifier: ${{ vars.WINGET_IDENTIFIER }}
           release-tag: ${{ env.RELEASE_TAG }}
           installers-regex: '_x64-setup\.exe$'
           token: ${{ secrets.WINGET_TOKEN }}

@@ -188,6 +188,75 @@ stored next to the license file. Reinstalling the app keeps the same id; reinsta
 wiping the OS changes it (a normal cause of "activated on another computer"; deactivate the old
 id and reactivate).
 
+## Releasing a new version (build, sign, publish)
+
+Two ways to ship a release — the same signed artifacts come out of both.
+
+### Option A: GitHub Actions (the normal path)
+
+`.github/workflows/release.yml` builds on every commit to `main` that bumps `version` in
+`package.json` (also on `v*` tags and manual dispatch). What it does:
+
+1. **Builds** the app on Windows/macOS/Linux and uploads the installers to a GitHub Release in
+   *your* repo (`$GITHUB_REPOSITORY`).
+2. **Signs** the updater artifacts with your minisign private key, read from the repo secrets
+   `TAURI_SIGNING_PRIVATE_KEY` + `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`, and uploads a
+   `latest.json` next to the installers.
+3. **Publishes the updater channel**: for stable releases it commits the freshly built
+   `latest.json` to the `updater-channel` branch of your repo. That branch is the second
+   endpoint in `tauri.conf.json`, so existing installs see the update within minutes.
+4. **winget / AUR** publishing run only if you set them up (`WINGET_IDENTIFIER` repo variable;
+   AUR package metadata lives in the workflow) — the jobs are inert until then and never touch
+   upstream's packages.
+
+### Option B: build locally
+
+```bash
+# one-time: install the private key where the build can read it
+mkdir -p "$HOME/.tauri"
+#   soundbox-updater.key  <- your minisign PRIVATE key (never commit this)
+#   soundbox-updater.key.pub <- matching public key (already embedded in tauri.conf.json)
+
+# build + bundle + sign (compile is cached, so re-runs are quick)
+export TAURI_SIGNING_PRIVATE_KEY="$(cat "$HOME/.tauri/soundbox-updater.key")"
+export TAURI_SIGNING_PRIVATE_KEY_PASSWORD=''
+npm run tauri build
+```
+
+Output in `src-tauri/target/release/bundle/`:
+
+| Artifact | Purpose |
+|---|---|
+| `msi/Soundbox_<ver>_x64_en-US.msi` + `.sig` | MSI installer + updater signature |
+| `nsis/Soundbox_<ver>_x64-setup.exe` + `.sig` | NSIS installer (preferred) + updater signature |
+
+Then upload the installers and signatures to a GitHub Release along with a `latest.json` that
+points at them. The CI workflow generates `latest.json` for you (tauri-action); hand-building
+one is `{ version, notes, pub_date, platforms: { "windows-x86_64": { signature, url } } }`
+where `signature` is the `.sig` file content copied verbatim and `url` is the direct download
+link of the installer (NSIS preferred, matching `updaterJsonPreferNsis: true`).
+
+### The signing keypair
+
+- Generated with `npx tauri signer generate --ci -p '' -w "$HOME/.tauri/soundbox-updater.key"`
+  (an empty password is fine — the key file itself is the secret; treat it like a private key).
+- The **public** key is embedded in `tauri.conf.json` under `plugins.updater.pubkey` — that is
+  what installed apps use to verify every update you ship. Keep the private key out of the repo
+  and in the GitHub secrets named above for CI.
+- Losing the private key means existing installs can never accept another update from you; keep
+  a backup next to `licensing/data/licenses.json`.
+
+### Replacing the go-live placeholders (before your first paid release)
+
+| Where | What |
+|---|---|
+| `src-tauri/tauri.conf.json` → `plugins.updater.endpoints` | `your-org/soundbox` → your real GitHub org/repo (both URLs) |
+| `src/internal/updateChecker.ts`, `src/ui/links.ts` | `your-org/soundbox` URLs → your real repo |
+| `src-tauri/src/license.rs` → `LICENSE_SERVER_URL` | `https://licenses.example.com` → your real server |
+| `src/internal/license.ts` | `LICENSE_PURCHASE_URL` / `LICENSE_SUPPORT_EMAIL` → your store / inbox |
+| `.github/workflows/release.yml` | AUR metadata + optional `WINGET_IDENTIFIER` → your packages |
+| Icon / window art | Replace upstream Zuno artwork before selling (see below) |
+
 ## Legal and distribution
 
 - The app is Apache-2.0. You may sell a modified build, but you must **keep the license and
@@ -195,11 +264,12 @@ id and reactivate).
   README credits) and you cannot use branding that implies YouTube/Google endorsement. Renaming
   the product is your call; `PRODUCT_ID`, `tauri.conf.json` (`productName`, `identifier`) and
   the activation-screen brand text are the places to touch.
-- **Point the auto-updater at your own releases.** `src-tauri/tauri.conf.json` currently
-  points `updater.endpoints` at the upstream GitHub repo, and the minisign `pubkey` is
-  upstream's. If you ship that as-is, paid users silently update to the free upstream build (or
-  fail signature checks). Either host your own signed artifacts + `latest.json` with your own
-  minisign keypair, or disable the updater plugin in your fork.
+- **The auto-updater is already pointed at your own releases** (see
+  [Releasing a new version](#releasing-a-new-version-build-sign-publish)); it is NOT set up to
+  serve upstream builds. Before your first release, replace the `your-org` placeholders with
+  your real GitHub org/repo. Also make sure the AUR package in `.github/workflows/release.yml`
+  and any winget publish (`WINGET_IDENTIFIER` repo variable) point at *your* packages, never
+  upstream's, or your paid users will be offered the free upstream app.
 - **YouTube/Google**: selling a YouTube Music *client* is what upstream does free; make sure
   your store listing and marketing don't claim affiliation with Google or YouTube.
 
