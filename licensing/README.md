@@ -256,7 +256,26 @@ link of the installer (NSIS preferred, matching `updaterJsonPreferNsis: true`).
 | `src-tauri/src/license.rs` → `LICENSE_SERVER_URL` | `https://licenses.example.com` → your real server |
 | `src/internal/license.ts` | `LICENSE_PURCHASE_URL` / `LICENSE_SUPPORT_EMAIL` → your store / inbox |
 | `.github/workflows/release.yml` | AUR metadata + optional `WINGET_IDENTIFIER` → your packages |
-| Icon / window art | Replace upstream Zuno artwork before selling (see below) |
+| Icon / window art | ✅ replaced with the Soundbox mark (`src-tauri/icons/source.svg`) |
+
+### Phase 4 — selling and delivery (go-live checklist)
+
+Everything the server and CLI support is built and tested; this phase is about plugging in
+your store and running it. Work top to bottom.
+
+1. **Pick a store** — [Lemon Squeezy](https://www.lemonsqueezy.com) (handles EU VAT; license
+   keys optional but supported) or [Gumroad](https://gumroad.com) (simplest to start). You
+   only need one.
+2. **Wire the checkout webhook** — on payment success, call `POST /admin/issue` with
+   `Authorization: Bearer $ADMIN_TOKEN` (see [Issuing and managing keys](#issuing-and-managing-keys)
+   for the one-curl example), then deliver the returned key to the buyer — Gumroad ping or
+   Lemon Squeezy fulfillment, or just email it.
+3. **Define support ops with the CLI** — `list` to see activations + machine ids,
+   `deactivate <key> <machineId>` for "I got a new PC" requests, `revoke` for refunds and
+   chargebacks, and `issue --max-devices 3` for family / multi-seat tiers if you sell them.
+4. **Decide trial policy per tier** — the current 7-day local trial is fine to start
+   ([Trials](#trials)); move to server-minted time-limited licenses later if you need trials
+   that survive reinstalls or clock changes.
 
 ## Legal and distribution
 
