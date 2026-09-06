@@ -1635,15 +1635,15 @@ fn build_tray(app: &tauri::AppHandle) -> tauri::Result<()> {
     use tauri::menu::{Menu, MenuItem};
     use tauri::tray::{TrayIconBuilder, TrayIconEvent};
 
-    let show = MenuItem::with_id(app, "tray-show", "Show Zuno", true, None::<&str>)?;
-    let quit = MenuItem::with_id(app, "tray-quit", "Quit Zuno", true, None::<&str>)?;
+    let show = MenuItem::with_id(app, "tray-show", "Show Soundbox", true, None::<&str>)?;
+    let quit = MenuItem::with_id(app, "tray-quit", "Quit Soundbox", true, None::<&str>)?;
     let menu = Menu::with_items(app, &[&show, &quit])?;
 
     TrayIconBuilder::with_id("main-tray")
         .icon(app.default_window_icon().cloned().ok_or_else(|| {
             tauri::Error::AssetNotFound("default window icon".to_string())
         })?)
-        .tooltip("Zuno")
+        .tooltip("Soundbox")
         .menu(&menu)
         // The menu is for the right-click; a left click should just bring the window back.
         .show_menu_on_left_click(false)
@@ -1908,7 +1908,7 @@ fn load_youtube_music_cookie_entries() -> Result<Option<String>, CommandError> {
 
 /*
  * The Keychain entry backing `load_or_create_cookie_encryption_key` is scoped to this build's
- * code signature. Zuno's macOS builds are ad-hoc signed (no paid Developer ID), so that
+ * code signature. Soundbox's macOS builds are ad-hoc signed (no paid Developer ID), so that
  * signature — and with it, access to the old key — changes on every single update. Before this
  * guarded against it, a stale key read as `NoEntry`, the loader minted a brand new random one,
  * and it was handed straight to AES-GCM against ciphertext only the *old* key could ever open:

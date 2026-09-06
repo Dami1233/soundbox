@@ -6,7 +6,7 @@ fn set_windows_app_identity() {
     use windows::{core::w, Win32::UI::Shell::SetCurrentProcessExplicitAppUserModelID};
 
     if let Err(error) =
-        unsafe { SetCurrentProcessExplicitAppUserModelID(w!("com.zuno.desktop")) }
+        unsafe { SetCurrentProcessExplicitAppUserModelID(w!("com.soundbox.desktop")) }
     {
         eprintln!("[internal][tauri][warn] unable to set Windows AppUserModelID: {error}");
     }
@@ -20,5 +20,5 @@ fn main() {
     // which shows an annoying size/diagnostics label overlay in the top-left.
     // Ensure the app never inherits that overlay.
     std::env::remove_var("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS");
-    zuno_lib::run()
+    soundbox_lib::run()
 }

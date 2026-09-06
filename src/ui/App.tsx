@@ -1116,7 +1116,7 @@ export default function App() {
 
     if (looksLikeYouTubeLink(query)) {
       void handleOpenLink(query, openInNewTab).then((opened) => {
-        // Not a link Zuno can open after all — fall back to searching for the text, so a
+        // Not a link Soundbox can open after all — fall back to searching for the text, so a
         // paste that resolves to nothing still does something.
         if (!opened) runSearch(query, openInNewTab);
       });

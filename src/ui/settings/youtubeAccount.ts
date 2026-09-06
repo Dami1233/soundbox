@@ -6,7 +6,7 @@ import {
 } from "../../internal/durableLocalSetting";
 
 /**
- * What Zuno does with the signed-in YouTube account beyond reading the library.
+ * What Soundbox does with the signed-in YouTube account beyond reading the library.
  *
  * Both default off. Each changes what leaves the machine — one attaches credentials to stream
  * resolution, the other writes to the account's listening history — so each is a decision the

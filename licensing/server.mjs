@@ -195,7 +195,7 @@ const server = http.createServer(async (req, res) => {
 
     if (route === "GET /") {
       res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
-      return res.end("Zuno license server. See licensing/README.md.\n");
+      return res.end("Soundbox license server. See licensing/README.md.\n");
     }
 
     return sendJson(res, 404, { ok: false, error: "NOT_FOUND" });

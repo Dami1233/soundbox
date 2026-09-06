@@ -61,7 +61,7 @@ export async function exportPlaylist(
     title: `Export ${playlist.title}`,
     defaultPath: `${sanitizeFileName(playlist.title)}.zuno.json`,
     filters: [
-      { name: "Zuno playlist", extensions: ["json"] },
+      { name: "Soundbox playlist", extensions: ["json"] },
       { name: "M3U playlist", extensions: ["m3u", "m3u8"] },
     ],
   });
@@ -204,7 +204,7 @@ export async function importPlaylistFile(): Promise<ImportedPlaylist | null> {
     if (!parsed) throw new Error("unrecognised");
     return parsed;
   } catch {
-    throw new Error("That file is not a Zuno playlist export.");
+    throw new Error("That file is not a Soundbox playlist export.");
   }
 }
 

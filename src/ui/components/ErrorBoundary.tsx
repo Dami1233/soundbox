@@ -71,7 +71,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <div className="flex flex-col gap-1.5">
           <h2 className="text-lg font-semibold text-foreground">{label} stopped working</h2>
           <p className="max-w-md text-sm text-muted-foreground">
-            The rest of Zuno is still running. Try again, and if it keeps happening the details
+            The rest of Soundbox is still running. Try again, and if it keeps happening the details
             are in the internal log.
           </p>
         </div>

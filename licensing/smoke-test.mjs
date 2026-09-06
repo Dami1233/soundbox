@@ -23,6 +23,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import crypto from "node:crypto";
+import { PRODUCT } from "./lib.mjs";
 
 const LICENSING_DIR = path.dirname(fileURLToPath(import.meta.url));
 const CLI = path.join(LICENSING_DIR, "cli.mjs");
@@ -146,7 +147,7 @@ async function main() {
     check("licenses.json written", existsSync(dbFile));
     const db = JSON.parse(readFileSync(dbFile, "utf8"));
     const rawPubB64 = publicKeyRawB64(db);
-    check("db product is zuno-desktop", db.product === "zuno-desktop", db.product);
+    check("db product is zuno-desktop", db.product === PRODUCT, db.product);
     check("public key is 32 raw bytes (44-char base64)", rawPubB64.length === 44, rawPubB64);
 
     // 2. issue two keys -----------------------------------------------------
@@ -176,7 +177,7 @@ async function main() {
     console.log("[smoke] POST /activate — happy path");
     const actA = await request(port, "/activate", {
       method: "POST",
-      body: { product: "zuno-desktop", key: keyA, machineId: "machine-A" },
+      body: { product: PRODUCT, key: keyA, machineId: "machine-A" },
     });
     check("activation succeeds", actA.status === 200 && actA.body.ok === true, JSON.stringify(actA.body));
     const payload = actA.body?.ok ? JSON.parse(actA.body.license.payload) : null;
@@ -192,7 +193,7 @@ async function main() {
     check(
       "envelope binds product + machine + key",
       !!payload &&
-        payload.product === "zuno-desktop" &&
+        payload.product === PRODUCT &&
         payload.machineId === "machine-A" &&
         normalizeKey(payload.key) === normalizeKey(keyA),
       JSON.stringify(payload),
@@ -202,7 +203,7 @@ async function main() {
     console.log("[smoke] POST /activate — same machine again");
     const actA2 = await request(port, "/activate", {
       method: "POST",
-      body: { product: "zuno-desktop", key: keyA, machineId: "machine-A" },
+      body: { product: PRODUCT, key: keyA, machineId: "machine-A" },
     });
     check("re-activation of same machine succeeds", actA2.body?.ok === true, JSON.stringify(actA2.body));
 
@@ -210,7 +211,7 @@ async function main() {
     console.log("[smoke] POST /activate — second machine");
     const actB = await request(port, "/activate", {
       method: "POST",
-      body: { product: "zuno-desktop", key: keyA, machineId: "machine-B" },
+      body: { product: PRODUCT, key: keyA, machineId: "machine-B" },
     });
     check("second machine rejected with LIMIT_REACHED", actB.body?.error === "LIMIT_REACHED", JSON.stringify(actB.body));
 
@@ -218,7 +219,7 @@ async function main() {
     console.log("[smoke] POST /activate — unknown key");
     const actBad = await request(port, "/activate", {
       method: "POST",
-      body: { product: "zuno-desktop", key: "ZZZZ-ZZZZ-ZZZZ-ZZZZ", machineId: "machine-A" },
+      body: { product: PRODUCT, key: "ZZZZ-ZZZZ-ZZZZ-ZZZZ", machineId: "machine-A" },
     });
     check("unknown key rejected with INVALID_KEY", actBad.body?.error === "INVALID_KEY", JSON.stringify(actBad.body));
 
@@ -230,7 +231,7 @@ async function main() {
     writeFileSync(dbFile, JSON.stringify(db2, null, 2));
     const actExp = await request(port, "/activate", {
       method: "POST",
-      body: { product: "zuno-desktop", key: expMatch?.[1], machineId: "machine-A" },
+      body: { product: PRODUCT, key: expMatch?.[1], machineId: "machine-A" },
     });
     check("expired key rejected with EXPIRED", actExp.body?.error === "EXPIRED", JSON.stringify(actExp.body));
 
@@ -240,7 +241,7 @@ async function main() {
     check("cli revoke exits 0", revoked.code === 0, revoked.err);
     const actRev = await request(port, "/activate", {
       method: "POST",
-      body: { product: "zuno-desktop", key: keyA, machineId: "machine-A" },
+      body: { product: PRODUCT, key: keyA, machineId: "machine-A" },
     });
     check("revoked key rejected with REVOKED", actRev.body?.error === "REVOKED", JSON.stringify(actRev.body));
 
@@ -252,7 +253,7 @@ async function main() {
     check("cli deactivate exits 0", deactivated.code === 0, deactivated.err);
     const actA3 = await request(port, "/activate", {
       method: "POST",
-      body: { product: "zuno-desktop", key: keyA, machineId: "machine-A" },
+      body: { product: PRODUCT, key: keyA, machineId: "machine-A" },
     });
     check("key works again after unrevoke + deactivate", actA3.body?.ok === true, JSON.stringify(actA3.body));
 

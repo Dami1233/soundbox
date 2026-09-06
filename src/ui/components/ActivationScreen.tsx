@@ -37,8 +37,8 @@ function describeState(status: LicenseStatus): { title: string; body: string } {
   switch (status.state) {
     case "unactivated":
       return {
-        title: "Activate Zuno",
-        body: "This copy of Zuno has not been activated yet. Start the 7-day free trial, or enter the license key you bought.",
+        title: "Activate Soundbox",
+        body: "This copy of Soundbox has not been activated yet. Start the 7-day free trial, or enter the license key you bought.",
       };
     case "trial":
       return {
@@ -48,21 +48,21 @@ function describeState(status: LicenseStatus): { title: string; body: string } {
     case "trialExpired":
       return {
         title: "Your free trial has ended",
-        body: "Thanks for trying Zuno. Enter the license key you bought to keep listening.",
+        body: "Thanks for trying Soundbox. Enter the license key you bought to keep listening.",
       };
     case "expired":
       return {
         title: "This license has expired",
-        body: "Enter a valid license key to continue using Zuno.",
+        body: "Enter a valid license key to continue using Soundbox.",
       };
     case "wrongMachine":
       return {
         title: "Activated on another computer",
-        body: "This copy of Zuno is activated on a different machine. If you recently reinstalled or upgraded this computer, deactivate the old machine and activate this one again.",
+        body: "This copy of Soundbox is activated on a different machine. If you recently reinstalled or upgraded this computer, deactivate the old machine and activate this one again.",
       };
     case "activated":
       return {
-        title: "Zuno is ready",
+        title: "Soundbox is ready",
         body: "Your license is valid. Enjoy the music.",
       };
   }
@@ -152,9 +152,9 @@ export function ActivationScreen({ status, onStatus }: ActivationScreenProps) {
     <div className="fixed inset-0 flex flex-col bg-background text-foreground">
       {/* Minimal window chrome: brand on the left, drag region, window buttons. */}
       <div className="relative z-30 flex h-[var(--titlebar-height)] shrink-0 items-center gap-2 bg-background px-3">
-        <div className="flex shrink-0 items-center gap-2 px-1" aria-label="Zuno">
+        <div className="flex shrink-0 items-center gap-2 px-1" aria-label="Soundbox">
           <span className="size-2.5 rounded-full bg-primary" aria-hidden="true" />
-          <span className="text-sm font-bold">Zuno</span>
+          <span className="text-sm font-bold">Soundbox</span>
         </div>
         <div
           className="min-w-6 flex-1 self-stretch"
@@ -265,7 +265,7 @@ export function ActivationScreen({ status, onStatus }: ActivationScreenProps) {
                   className="font-medium text-primary transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   onClick={() => void openUrl(LICENSE_PURCHASE_URL)}
                 >
-                  Buy Zuno
+                  Buy Soundbox
                 </button>
               </p>
               {LICENSE_SUPPORT_EMAIL && (
@@ -283,7 +283,7 @@ export function ActivationScreen({ status, onStatus }: ActivationScreenProps) {
           </div>
 
           <p className="mt-5 text-center text-xs leading-relaxed text-muted-foreground/70">
-            Zuno only contacts the license server to activate a key and binds each license to a
+            Soundbox only contacts the license server to activate a key and binds each license to a
             single computer. No usage data leaves this device.
           </p>
         </div>

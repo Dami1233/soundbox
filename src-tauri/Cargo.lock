@@ -4407,6 +4407,45 @@ dependencies = [
 ]
 
 [[package]]
+name = "soundbox"
+version = "1.4.0"
+dependencies = [
+ "aes-gcm",
+ "base64 0.22.1",
+ "block2",
+ "discord-rich-presence",
+ "ed25519-compact",
+ "futures-util",
+ "keyring",
+ "lofty",
+ "md5",
+ "notify",
+ "objc2",
+ "objc2-foundation",
+ "opus",
+ "portpicker",
+ "rand 0.8.6",
+ "reqwest 0.12.28",
+ "rodio",
+ "serde",
+ "serde_json",
+ "souvlaki",
+ "symphonia",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-autostart",
+ "tauri-plugin-dialog",
+ "tauri-plugin-localhost",
+ "tauri-plugin-opener",
+ "tauri-plugin-process",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-updater",
+ "tokio",
+ "url",
+ "windows 0.61.3",
+]
+
+[[package]]
 name = "soup3"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6899,45 +6938,6 @@ name = "zmij"
 version = "1.0.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b8848ee67ecc8aedbaf3e4122217aff892639231befc6a1b58d29fff4c2cabaa"
-
-[[package]]
-name = "zuno"
-version = "1.4.0"
-dependencies = [
- "aes-gcm",
- "base64 0.22.1",
- "block2",
- "discord-rich-presence",
- "ed25519-compact",
- "futures-util",
- "keyring",
- "lofty",
- "md5",
- "notify",
- "objc2",
- "objc2-foundation",
- "opus",
- "portpicker",
- "rand 0.8.6",
- "reqwest 0.12.28",
- "rodio",
- "serde",
- "serde_json",
- "souvlaki",
- "symphonia",
- "tauri",
- "tauri-build",
- "tauri-plugin-autostart",
- "tauri-plugin-dialog",
- "tauri-plugin-localhost",
- "tauri-plugin-opener",
- "tauri-plugin-process",
- "tauri-plugin-single-instance",
- "tauri-plugin-updater",
- "tokio",
- "url",
- "windows 0.61.3",
-]
 
 [[package]]
 name = "zvariant"

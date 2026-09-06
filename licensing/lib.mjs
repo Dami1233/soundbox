@@ -11,7 +11,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import crypto from "node:crypto";
 
-export const PRODUCT = "zuno-desktop";
+export const PRODUCT = "soundbox-desktop";
 const DB_FILE = "licenses.json";
 const KEY_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 const DAY_MS = 24 * 60 * 60 * 1000;

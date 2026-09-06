@@ -122,7 +122,7 @@ window.addEventListener("unhandledrejection", (event) => {
  */
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <ErrorBoundary label="Zuno">
+    <ErrorBoundary label="Soundbox">
       {/*
        * The licensing gate. In release builds nothing of the app mounts until a trial is
        * running or a license key verifies (src-tauri/src/license.rs); debug builds skip

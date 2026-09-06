@@ -6,7 +6,7 @@
 import { invoke } from "@tauri-apps/api/core";
 
 /** Where buyers purchase a key — point this at your store checkout before shipping. */
-export const LICENSE_PURCHASE_URL = "https://example.com/buy-zuno";
+export const LICENSE_PURCHASE_URL = "https://example.com/buy-soundbox";
 
 /** Optional support address shown next to the purchase link; null hides it. */
 export const LICENSE_SUPPORT_EMAIL: string | null = null;

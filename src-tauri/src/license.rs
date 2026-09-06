@@ -29,7 +29,7 @@
  * key, and no one can alter a stored license without breaking it.
  *
  * Debug builds skip the gate (activate as a "development" license) so day-to-day `tauri dev`
- * work is unaffected. Set ZUNO_LICENSE_ENFORCE=1 to exercise the real gate in a debug build.
+ * work is unaffected. Set SOUNDBOX_LICENSE_ENFORCE=1 to exercise the real gate in a debug build.
  */
 
 use base64::{engine::general_purpose::STANDARD, Engine as _};
@@ -44,13 +44,13 @@ use tauri::{AppHandle, Manager, State};
 
 /// Must match the product id the seller's server stamps into licenses. Bump both together if
 /// you rename the product.
-pub const PRODUCT_ID: &str = "zuno-desktop";
+pub const PRODUCT_ID: &str = "soundbox-desktop";
 
 /*
  * The seller's license server. Change to your own host before shipping a release build.
  *
  *   - Release builds read this constant.
- *   - ZUNO_LICENSE_SERVER overrides it at runtime (useful for pointing a build at a staging
+ *   - SOUNDBOX_LICENSE_SERVER overrides it at runtime (useful for pointing a build at a staging
  *     server without recompiling; harmless in release, since the server can only hand out
  *     licenses signed by the private key that matches LICENSE_PUBLIC_KEY_B64 below).
  */
@@ -66,7 +66,7 @@ pub const LICENSE_SERVER_URL: &str = "https://licenses.example.com";
  * The command prints this value; paste it here. The matching private key must live ONLY on
  * the license server you run — never in a build, never in a repo.
  */
-pub const LICENSE_PUBLIC_KEY_B64: &str = "f2Dg0NqNNtth5JUrI02flKwuksSa0LdRQ2/9b1CLSNI=";
+pub const LICENSE_PUBLIC_KEY_B64: &str = "juhBRXePOxFG+XvHRLfVOw6ECz7wnzoTr5+DReTNhyI=";
 
 const LICENSE_FILE_NAME: &str = "license-v1.json";
 const TRIAL_FILE_NAME: &str = "trial-v1.json";
@@ -462,16 +462,16 @@ fn status_view(evaluation: &LicenseEvaluation) -> LicenseStatusView {
 // ---------------------------------------------------------------------------
 
 fn license_server_url() -> String {
-    std::env::var("ZUNO_LICENSE_SERVER")
+    std::env::var("SOUNDBOX_LICENSE_SERVER")
         .unwrap_or_else(|_| LICENSE_SERVER_URL.to_string())
         .trim_end_matches('/')
         .to_string()
 }
 
-/// Debug builds skip the gate unless ZUNO_LICENSE_ENFORCE=1; release builds always gate.
+/// Debug builds skip the gate unless SOUNDBOX_LICENSE_ENFORCE=1; release builds always gate.
 fn gating_enabled() -> bool {
     if cfg!(debug_assertions) {
-        std::env::var("ZUNO_LICENSE_ENFORCE")
+        std::env::var("SOUNDBOX_LICENSE_ENFORCE")
             .map(|value| value == "1" || value.eq_ignore_ascii_case("true"))
             .unwrap_or(false)
     } else {
@@ -576,11 +576,11 @@ pub fn license_start_trial(
     match current.state {
         "trial" | "activated" => Ok(status_view(&current)),
         "trialExpired" => Err(
-            "Your free trial has already ended. Enter a license key to continue using Zuno."
+            "Your free trial has already ended. Enter a license key to continue using Soundbox."
                 .to_string(),
         ),
         "expired" | "wrongMachine" => Err(
-            "Your copy of Zuno is already tied to a license. Enter that key to continue."
+            "Your copy of Soundbox is already tied to a license. Enter that key to continue."
                 .to_string(),
         ),
         _ => {
@@ -674,9 +674,7 @@ pub fn license_reset(app: AppHandle, lock: State<'_, LicenseLock>) -> Result<(),
 #[cfg(test)]
 mod tests {
     use super::*;
-    // The anonymous `Engine as _` import in the parent module does not travel through the
-    // glob re-export, and the base64 methods need the trait in scope here.
-    use base64::{engine::general_purpose::STANDARD, Engine as _};
+    use base64::engine::general_purpose::STANDARD;
 
     /// A fixed test seed; the matching public key is derived from it below. Never ship a
     /// signing key inside the binary — tests only.
@@ -786,8 +784,8 @@ mod tests {
     #[test]
     fn verifies_a_license_signed_by_the_server_keypair() {
         let envelope = LicenseEnvelope {
-            payload: "{\"product\":\"zuno-desktop\",\"key\":\"ABCD-EFGH-JKLM-NOPQ\",\"licensee\":null,\"plan\":\"perpetual\",\"machineId\":\"test-machine\",\"issuedAtMs\":1750000000000,\"expiresAtMs\":null}".to_string(),
-            sig: "dqoZ5ff92vmVmQ7dF2ms7rVOisHZk1SA7TRE0GCfHrLxZXIOJI2IixpM6S5BM2xIJ6rEYPUkTX15aWeoFuO0Dw==".to_string(),
+            payload: "{\"product\":\"soundbox-desktop\",\"key\":\"ABCD-EFGH-JKLM-NOPQ\",\"licensee\":null,\"plan\":\"perpetual\",\"machineId\":\"test-machine\",\"issuedAtMs\":1750000000000,\"expiresAtMs\":null}".to_string(),
+            sig: "UDhGoylLppOFfhqKOs9stRC7snMe7mxctZN9J0+mbaMk4nlFkHCl1K/514tIMh6On7aqgx3WXkrp4A7t/bjeDw==".to_string(),
         };
         let payload = verify_signature(&envelope).expect("server-signed fixture must verify");
         assert_eq!(payload.key, "ABCD-EFGH-JKLM-NOPQ");

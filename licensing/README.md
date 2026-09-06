@@ -1,4 +1,4 @@
-# Licensing — activation keys for a paid Zuno build
+# Licensing — activation keys for a paid Soundbox build
 
 This folder is the seller side of the activation system. The **client** side lives in
 `src-tauri/src/license.rs` (Rust) and `src/ui/components/ActivationScreen.tsx` +
@@ -68,13 +68,13 @@ pub const LICENSE_PUBLIC_KEY_B64: &str = "<paste here>";
 pub const LICENSE_SERVER_URL: &str = "https://licenses.example.com";
 ```
 
-`ZUNO_LICENSE_SERVER` overrides it at runtime (handy for staging). **Release builds require
+`SOUNDBOX_LICENSE_SERVER` overrides it at runtime (handy for staging). **Release builds require
 an https:// URL.**
 
 **3. Point the activation screen at your store.** In `src/internal/license.ts`:
 
 ```ts
-export const LICENSE_PURCHASE_URL = "https://example.com/buy-zuno";
+export const LICENSE_PURCHASE_URL = "https://example.com/buy-soundbox";
 export const LICENSE_SUPPORT_EMAIL: string | null = null;
 ```
 
@@ -151,7 +151,7 @@ Buyers hitting "Already activated on the maximum number of computers" should ask
   detected (there is no trusted clock server in the loop). If you need trials that resist
   that, make `/activate` also mint time-limited *trial licenses* instead — the envelope
   already carries `expiresAtMs`.
-- Debug builds skip the gate entirely. Run with `ZUNO_LICENSE_ENFORCE=1` to exercise the real
+- Debug builds skip the gate entirely. Run with `SOUNDBOX_LICENSE_ENFORCE=1` to exercise the real
   flow in a dev build; release builds always enforce.
 
 ## Dev workflow
@@ -159,7 +159,7 @@ Buyers hitting "Already activated on the maximum number of computers" should ask
 | Situation | How |
 |---|---|
 | `npm run tauri dev` (debug) | Gate bypassed, app opens straight away |
-| Test the real gate in dev | `ZUNO_LICENSE_ENFORCE=1 npm run tauri dev` |
+| Test the real gate in dev | `SOUNDBOX_LICENSE_ENFORCE=1 npm run tauri dev` |
 | Fully offline unit tests | `cargo test license` in `src-tauri` |
 | Reset a machine's local activation | Delete `<app-data>/license-v1.json` + `trial-v1.json`, or ship a build that exposes `license_reset` |
 

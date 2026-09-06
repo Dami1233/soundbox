@@ -6,7 +6,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 const DISCORD_CLIENT_ID: &str = "1515682467154100344";
 const GITHUB_REPO: &str = "https://github.com/noFAYZ/zuno";
-const ACTIVITY_NAME: &str = "Zuno";
+const ACTIVITY_NAME: &str = "Soundbox";
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct DiscordPresenceData {
@@ -97,7 +97,7 @@ impl DiscordRpcManager {
          * The artist, not the app, is the headline.
          *
          * `name` is what Discord prints after "Listening to", so sending the app name made
-         * every song read "Listening to Zuno" — the same line for everything, saying nothing
+         * every song read "Listening to Soundbox" — the same line for everything, saying nothing
          * about what is actually playing. The artist goes there and the app name is only the
          * fallback for a track with no artist, so the line is never empty.
          */
@@ -118,7 +118,7 @@ impl DiscordRpcManager {
             },
             "buttons": [
                 {
-                    "label": "Get Zuno",
+                    "label": "Get Soundbox",
                     "url": GITHUB_REPO,
                 }
             ],
