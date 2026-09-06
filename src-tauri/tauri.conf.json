@@ -53,8 +53,8 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDE3OUQ0MTU1M0I1QkRCREYKUldUZjIxczdWVUdkRnpZS3ZkN0U1VysyRHJmWXdxVUZVSDBmRmJJYVM5djNXRzB1ZEQ1bXV2b2oK",
       "endpoints": [
-        "https://github.com/your-org/soundbox/releases/latest/download/latest.json",
-        "https://raw.githubusercontent.com/your-org/soundbox/updater-channel/latest.json"
+        "https://github.com/Dami1233/soundbox/releases/latest/download/latest.json",
+        "https://raw.githubusercontent.com/Dami1233/soundbox/updater-channel/latest.json"
       ]
     }
   }

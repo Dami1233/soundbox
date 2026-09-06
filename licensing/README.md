@@ -250,8 +250,8 @@ link of the installer (NSIS preferred, matching `updaterJsonPreferNsis: true`).
 
 | Where | What |
 |---|---|
-| `src-tauri/tauri.conf.json` → `plugins.updater.endpoints` | `your-org/soundbox` → your real GitHub org/repo (both URLs) |
-| `src/internal/updateChecker.ts`, `src/ui/links.ts` | `your-org/soundbox` URLs → your real repo |
+| `src-tauri/tauri.conf.json` → `plugins.updater.endpoints` | ✅ set to `Dami1233/soundbox` (both URLs) |
+| `src/internal/updateChecker.ts`, `src/ui/links.ts` | ✅ set to `Dami1233/soundbox` |
 | `src-tauri/src/license.rs` → `LICENSE_SERVER_URL` | `https://licenses.example.com` → your real server |
 | `src/internal/license.ts` | `LICENSE_PURCHASE_URL` / `LICENSE_SUPPORT_EMAIL` → your store / inbox |
 | `.github/workflows/release.yml` | AUR metadata + optional `WINGET_IDENTIFIER` → your packages |
@@ -266,10 +266,10 @@ link of the installer (NSIS preferred, matching `updaterJsonPreferNsis: true`).
   the activation-screen brand text are the places to touch.
 - **The auto-updater is already pointed at your own releases** (see
   [Releasing a new version](#releasing-a-new-version-build-sign-publish)); it is NOT set up to
-  serve upstream builds. Before your first release, replace the `your-org` placeholders with
-  your real GitHub org/repo. Also make sure the AUR package in `.github/workflows/release.yml`
-  and any winget publish (`WINGET_IDENTIFIER` repo variable) point at *your* packages, never
-  upstream's, or your paid users will be offered the free upstream app.
+  serve upstream builds. The updater endpoints already point at `Dami1233/soundbox`. Make sure the AUR package in
+  `.github/workflows/release.yml` and any winget publish (`WINGET_IDENTIFIER` repo variable)
+  point at *your* packages, never upstream's, or your paid users will be offered the free
+  upstream app.
 - **YouTube/Google**: selling a YouTube Music *client* is what upstream does free; make sure
   your store listing and marketing don't claim affiliation with Google or YouTube.
 

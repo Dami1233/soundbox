@@ -5,9 +5,9 @@ import { logInternalError } from "./logging";
 
 const RELEASE_TAG_PREFIX = "v";
 const RELEASES_URL =
-  "https://github.com/your-org/soundbox/releases/tag";
+  "https://github.com/Dami1233/soundbox/releases/tag";
 const RELEASES_API_URL =
-  "https://api.github.com/repos/your-org/soundbox/releases/latest";
+  "https://api.github.com/repos/Dami1233/soundbox/releases/latest";
 const SNOOZE_PREFIX = "just-another-music-client:update-snooze:";
 const SNOOZE_DURATION_MS = 24 * 60 * 60 * 1000;
 

@@ -88,10 +88,10 @@ jobs:
 
           if test -s "$notes"; then
             gh release create "$tag" --repo "$GITHUB_REPOSITORY" \
-              --title "Zuno ${tag#v}" --notes-file "$notes"
+              --title "Soundbox ${tag#v}" --notes-file "$notes"
           else
             gh release create "$tag" --repo "$GITHUB_REPOSITORY" \
-              --title "Zuno ${tag#v}" --generate-notes
+              --title "Soundbox ${tag#v}" --generate-notes
           fi
           echo "proceed=true" >> "$GITHUB_OUTPUT"
 
@@ -228,7 +228,7 @@ jobs:
         run: |
           set -euo pipefail
           # Located rather than hardcoded: the executable is named from the Cargo package
-          # (`zuno`), which Tauri may rename to `productName` during bundling. Globbing the
+          # (`soundbox`), which Tauri may rename to `productName` during bundling. Globbing the
           # one top-level exe survives either, and fails loudly if that assumption breaks.
           portable_exe=$(find src-tauri/target/release -maxdepth 1 -type f -name '*.exe' | head -n 1)
           if [ -z "$portable_exe" ]; then
@@ -237,7 +237,7 @@ jobs:
           fi
           echo "Uploading $portable_exe"
           gh release upload "$RELEASE_TAG" \
-            "${portable_exe}#Zuno-Windows-portable.exe" \
+            "${portable_exe}#Soundbox-Windows-portable.exe" \
             --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
