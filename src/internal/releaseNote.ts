@@ -13,7 +13,7 @@ import { getAppSetting, setAppSetting } from "./appSettings";
  *   **Topic** — one line, in plain language, about what changed for the listener.
  *   ...one line per topic, four or so at most...
  *
- *   Report anything broken on GitHub, or come say hello at /r/ZunoMusic.
+ *   Report anything broken on GitHub, or come say hello: https://github.com/Dami1233/soundbox
  *
  *   Thanks :)
  *
@@ -23,13 +23,12 @@ import { getAppSetting, setAppSetting } from "./appSettings";
  */
 const SEEN_VERSION_KEY = "release-note-seen-version";
 
-export const RELEASE_NOTE_BODY = `**Accounts** — switch between multiple YouTube Music accounts instantly, no signing out required.
+export const RELEASE_NOTE_BODY = `**A new name** — this app is now Soundbox, a standalone YouTube Music desktop client with its own update channel, release notes, and support.
+**Updates** — from now on, new versions install from Soundbox's own channel, not the upstream Zuno project.
 **Sound** — pick your exact output device (real speaker/headphone names on Linux too), plus a bypass toggle and mini EQ right in the player bar.
-**Playlists** — shuffle now truly shuffles the whole playlist from wherever you are in it, loop cycles properly instead of getting stuck, and any playlist can be hidden from your library.
 **Discovery** — start a radio station from any track, and pages load in with proper skeletons instead of a blank flash.
-**Fixes** — some tracks auto-skipping a few seconds in, crossfade stalling when minimized, YouTube embed errors now falling back automatically, and a second launch refocusing Soundbox instead of opening twice.
 
-Report anything broken on GitHub, or come say hello at /r/ZunoMusic.
+Report anything broken on GitHub, or come say hello: https://github.com/Dami1233/soundbox
 
 Thanks :)`;
 

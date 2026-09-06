@@ -251,7 +251,8 @@ link of the installer (NSIS preferred, matching `updaterJsonPreferNsis: true`).
 | Where | What |
 |---|---|
 | `src-tauri/tauri.conf.json` → `plugins.updater.endpoints` | ✅ set to `Dami1233/soundbox` (both URLs) |
-| `src/internal/updateChecker.ts`, `src/ui/links.ts` | ✅ set to `Dami1233/soundbox` |
+| `src/internal/updateChecker.ts`, `src/ui/links.ts`, `src-tauri/src/discord_rpc.rs` | ✅ set to `Dami1233/soundbox` (updater, in-app links, Discord button) |
+| `src/internal/releaseNote.ts`, `mini.html` | ✅ release note + mini-player title rewritten for Soundbox |
 | `src-tauri/src/license.rs` → `LICENSE_SERVER_URL` | `https://licenses.example.com` → your real server |
 | `src/internal/license.ts` | `LICENSE_PURCHASE_URL` / `LICENSE_SUPPORT_EMAIL` → your store / inbox |
 | `.github/workflows/release.yml` | AUR metadata + optional `WINGET_IDENTIFIER` → your packages |

@@ -5,7 +5,7 @@ use std::sync::{Arc, Mutex};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 const DISCORD_CLIENT_ID: &str = "1515682467154100344";
-const GITHUB_REPO: &str = "https://github.com/noFAYZ/zuno";
+const GITHUB_REPO: &str = "https://github.com/Dami1233/soundbox";
 const ACTIVITY_NAME: &str = "Soundbox";
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
