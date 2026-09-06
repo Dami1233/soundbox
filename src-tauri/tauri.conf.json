@@ -51,10 +51,10 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDMyMDQ0MjEzQjkxMThGQ0MKUldUTWp4RzVFMElFTXZGMmxnOC84VXlUTkZyaStyQzFkcXd6UVczeGNBNkVuWWU3MjdIM2JLVkgK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDE3OUQ0MTU1M0I1QkRCREYKUldUZjIxczdWVUdkRnpZS3ZkN0U1VysyRHJmWXdxVUZVSDBmRmJJYVM5djNXRzB1ZEQ1bXV2b2oK",
       "endpoints": [
-        "https://github.com/noFAYZ/zuno/releases/latest/download/latest.json",
-        "https://raw.githubusercontent.com/noFAYZ/zuno/updater-channel/latest.json"
+        "https://github.com/your-org/soundbox/releases/latest/download/latest.json",
+        "https://raw.githubusercontent.com/your-org/soundbox/updater-channel/latest.json"
       ]
     }
   }
