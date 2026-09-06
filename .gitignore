@@ -58,6 +58,9 @@ outputs/*
 *.p12
 *.pfx
 
+# License server state (private key + issued keys). Never commit.
+licensing/data/
+
 # Reference dumps and working images kept in docs/ for local use only. The committed
 # documentation (architecture.md, backend.md, frontend.md, solarIcons.md) and the README's
 # screenshots stay tracked — this covers the scratch material that accumulates beside them.

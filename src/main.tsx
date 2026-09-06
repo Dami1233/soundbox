@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./ui/App";
+import { ActivationGate } from "./ui/AppGate";
 import { ErrorBoundary } from "./ui/components/ErrorBoundary";
 import "./ui/styles/global.css";
 import { logInternalError, logInternalInfo } from "./internal/logging";
@@ -123,7 +123,12 @@ window.addEventListener("unhandledrejection", (event) => {
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ErrorBoundary label="Zuno">
-      <App />
+      {/*
+       * The licensing gate. In release builds nothing of the app mounts until a trial is
+       * running or a license key verifies (src-tauri/src/license.rs); debug builds skip
+       * the gate and mount <App/> immediately.
+       */}
+      <ActivationGate />
     </ErrorBoundary>
   </React.StrictMode>,
 );

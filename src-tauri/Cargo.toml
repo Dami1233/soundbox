@@ -26,7 +26,7 @@ tauri-plugin-single-instance = "2"
 portpicker = "0.1"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "gzip", "brotli", "deflate", "stream"] }
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "gzip", "brotli", "deflate", "stream", "json"] }
 base64 = "0.22"
 url = "2.5"
 keyring = { version = "3.6", features = ["apple-native", "windows-native", "sync-secret-service"] }
@@ -45,6 +45,8 @@ rodio = { version = "0.22.2", default-features = false, features = ["playback", 
 # Demuxing only, and pinned to the version rodio already pulls so the binary carries one copy
 # of the Matroska/Ogg readers rather than two.
 symphonia = { version = "0.5", default-features = false, features = ["mkv", "ogg"] }
+# Verify-only Ed25519 for license envelopes: tiny, pure Rust, no_std-friendly.
+ed25519-compact = "2"
 # libopus, built from source via cmake. symphonia has no Opus decoder at all, and YouTube
 # serves Opus-in-WebM for the large majority of tracks at `high` — and as the *only* audio
 # offered for many of them, so preferring AAC is not an alternative.

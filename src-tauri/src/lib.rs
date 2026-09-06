@@ -51,6 +51,7 @@ mod discord_rpc;
 mod equalizer;
 mod opus_source;
 mod lastfm;
+mod license;
 
 // Keep the legacy service name so existing sign-in credentials survive the product rename.
 const KEYRING_SERVICE: &str = "com.ytmusicdock.app";
@@ -5257,6 +5258,7 @@ pub fn run() {
         .manage(CacheLock(Mutex::new(())))
         .manage(AppSettingsLock(Mutex::new(())))
         .manage(AccountStoreLock(Mutex::new(())))
+        .manage(license::LicenseLock(Mutex::new(())))
         .manage(YoutubeCookieJar(Mutex::new(CookieJarState::default())))
         .manage(discord_manager)
         .plugin(tauri_plugin_autostart::Builder::new().build())
@@ -5432,7 +5434,11 @@ pub fn run() {
             #[cfg(target_os = "windows")]
             windows_media::update_windows_media_session,
             #[cfg(target_os = "linux")]
-            linux_media::update_linux_media_session
+            linux_media::update_linux_media_session,
+            license::license_status,
+            license::license_activate,
+            license::license_start_trial,
+            license::license_reset
         ])
         .run(context)
         .expect("error while running tauri application");
