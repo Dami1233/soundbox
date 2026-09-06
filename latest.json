@@ -1,0 +1,51 @@
+{
+  "version": "1.4.0",
+  "notes": "",
+  "pub_date": "2026-09-06T21:14:53.638Z",
+  "platforms": {
+    "darwin-aarch64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUZjIxczdWVUdkRnd1czlHOURkcGs0eGd2WUw2YUxUVENWTVhRTVRLbkdJRUVRUWxURzQvaENkdEhHdm5mTncza0NSNmNCSm0xUDV1VVVFMndxdDIyaEhVbUZORldFVndRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI4OTA5CWZpbGU6U291bmRib3guYXBwLnRhci5negpUUmlGRGxxbXZLcUZicEF5cHUxeEhSWmFsVWVERW1ad044R1lFajBaMUE3VXpEN2RXc0JZUm0wbk40NHBucTJGKzRId1hQU0VLcXEyQTJWKzhPVG5BQT09Cg==",
+      "url": "https://github.com/Dami1233/soundbox/releases/download/v1.4.0/Soundbox_aarch64.app.tar.gz"
+    },
+    "darwin-aarch64-app": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUZjIxczdWVUdkRnd1czlHOURkcGs0eGd2WUw2YUxUVENWTVhRTVRLbkdJRUVRUWxURzQvaENkdEhHdm5mTncza0NSNmNCSm0xUDV1VVVFMndxdDIyaEhVbUZORldFVndRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI4OTA5CWZpbGU6U291bmRib3guYXBwLnRhci5negpUUmlGRGxxbXZLcUZicEF5cHUxeEhSWmFsVWVERW1ad044R1lFajBaMUE3VXpEN2RXc0JZUm0wbk40NHBucTJGKzRId1hQU0VLcXEyQTJWKzhPVG5BQT09Cg==",
+      "url": "https://github.com/Dami1233/soundbox/releases/download/v1.4.0/Soundbox_aarch64.app.tar.gz"
+    },
+    "linux-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUZjIxczdWVUdkRjBWVDJCWjFsUGdoVDN2TFY2WmNjYjlnUkw0bUd5bkwwcTdKd0xsN3FpbS9rbVBqSERyaFQzS2NDeXMyajhVSW5pOEl6cUw1VnFIRmI2bmFnOFZXdVFFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI5MTE5CWZpbGU6U291bmRib3hfMS40LjBfYW1kNjQuQXBwSW1hZ2UKdnJTTGxRbDZzNDR1bTRqbHpzZFdnNTh4QzZDMmlZN3RGTVRhR1pidlVSZzBub2lKQXU5RmY3N0Z1b0VMVmozb2RJTWdxVitmWXpkOXBSazQ3U2RxQVE9PQo=",
+      "url": "https://github.com/Dami1233/soundbox/releases/download/v1.4.0/Soundbox_1.4.0_amd64.AppImage"
+    },
+    "linux-x86_64-appimage": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUZjIxczdWVUdkRjBWVDJCWjFsUGdoVDN2TFY2WmNjYjlnUkw0bUd5bkwwcTdKd0xsN3FpbS9rbVBqSERyaFQzS2NDeXMyajhVSW5pOEl6cUw1VnFIRmI2bmFnOFZXdVFFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI5MTE5CWZpbGU6U291bmRib3hfMS40LjBfYW1kNjQuQXBwSW1hZ2UKdnJTTGxRbDZzNDR1bTRqbHpzZFdnNTh4QzZDMmlZN3RGTVRhR1pidlVSZzBub2lKQXU5RmY3N0Z1b0VMVmozb2RJTWdxVitmWXpkOXBSazQ3U2RxQVE9PQo=",
+      "url": "https://github.com/Dami1233/soundbox/releases/download/v1.4.0/Soundbox_1.4.0_amd64.AppImage"
+    },
+    "linux-x86_64-deb": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUZjIxczdWVUdkRjZXVmY4eW5Ya1M5eFZqcHhVZkJGOWpGOFRMRmxRTTVVZklyWUY1VEh2RUVzb2pGTXNMM2pRRTNMdHhMUEsvVEhNR2krRkg5aHNWOTB6cnYzbzBsMFFrPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI5MTE5CWZpbGU6U291bmRib3hfMS40LjBfYW1kNjQuZGViCjdzMDJURkh4a2hiMGVKRFp2aHJoKzFkQmF1a29vMFpTU3crNnNJZHRLTDIxaGp5YkZvTlkrUit5Q2dFV0hqUkxMRUYzeHZyYytBbThYL2xTVldsWER3PT0K",
+      "url": "https://github.com/Dami1233/soundbox/releases/download/v1.4.0/Soundbox_1.4.0_amd64.deb"
+    },
+    "linux-x86_64-rpm": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUZjIxczdWVUdkRjVLcVZPQXkrUjV5N3RwT0RYT2ZFUk92ckhCSlZZbG9lckNPN2pkY3VmcjRLUVdjemYwb3FrNHVKSk5zbG44eTM4U1VDdE1EZU9Ea09LTUZiM09hS0FFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI5MTE5CWZpbGU6U291bmRib3gtMS40LjAtMS54ODZfNjQucnBtCitDdWRpTUJBcjl6WThrZ2pmUHVQZzMxQkNjT0lSWEVWQUprMmhUWDVSWVQ4NG9nNm9IODczY3dOWUZLMnVSaGt4VEhpMmJWbTNKWmlicmtlbkZ2UENnPT0K",
+      "url": "https://github.com/Dami1233/soundbox/releases/download/v1.4.0/Soundbox-1.4.0-1.x86_64.rpm"
+    },
+    "darwin-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUZjIxczdWVUdkRjZNVG92ZjBhNFFiWXpvaWZ4cmRkeEs3RGZuTmdsTHhYalI5R1NBOElhZk9IRllzektQeHB0eEhkQlE2ektVWW0waGh6QncwOFh6eG1LN3dySGpZbGc0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI5MTY3CWZpbGU6U291bmRib3guYXBwLnRhci5negp3RktyQllKRWJ1THRDVDZGZ1lQWE5jN2x4S3FFa2M4R3h3cjlCZXQ5V3U0dTk2SHB1Mnl6OXBJS28yRmwzVVNzSUwvNS9xVjhUT0RVZ084YXl2SjZEUT09Cg==",
+      "url": "https://github.com/Dami1233/soundbox/releases/download/v1.4.0/Soundbox_x64.app.tar.gz"
+    },
+    "darwin-x86_64-app": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUZjIxczdWVUdkRjZNVG92ZjBhNFFiWXpvaWZ4cmRkeEs3RGZuTmdsTHhYalI5R1NBOElhZk9IRllzektQeHB0eEhkQlE2ektVWW0waGh6QncwOFh6eG1LN3dySGpZbGc0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI5MTY3CWZpbGU6U291bmRib3guYXBwLnRhci5negp3RktyQllKRWJ1THRDVDZGZ1lQWE5jN2x4S3FFa2M4R3h3cjlCZXQ5V3U0dTk2SHB1Mnl6OXBJS28yRmwzVVNzSUwvNS9xVjhUT0RVZ084YXl2SjZEUT09Cg==",
+      "url": "https://github.com/Dami1233/soundbox/releases/download/v1.4.0/Soundbox_x64.app.tar.gz"
+    },
+    "windows-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUZjIxczdWVUdkRndkL2NodXBGbU9YQ0RhaGJ1L2k0cWdna1dEeExvYW81cHpOb044dFVuaWY3SjZyWXNJSi9QdnZIZkVIeDJUUmRXWGRsSE1meml3c1NZaHh3Si9uS1FZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI5Mjg5CWZpbGU6U291bmRib3hfMS40LjBfeDY0LXNldHVwLmV4ZQpseDBWeE9ucVkyZHp3UTE5UVNCZU1BU2o0QXFRMkVkc1cwQ1lGYW1zNFJiYlFPV0M0Y3lyKzMzWjZGejNvOHhYUzBUd01DZXVOb0RHU0ZUYmVHYjRCZz09Cg==",
+      "url": "https://github.com/Dami1233/soundbox/releases/download/v1.4.0/Soundbox_1.4.0_x64-setup.exe"
+    },
+    "windows-x86_64-nsis": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUZjIxczdWVUdkRndkL2NodXBGbU9YQ0RhaGJ1L2k0cWdna1dEeExvYW81cHpOb044dFVuaWY3SjZyWXNJSi9QdnZIZkVIeDJUUmRXWGRsSE1meml3c1NZaHh3Si9uS1FZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI5Mjg5CWZpbGU6U291bmRib3hfMS40LjBfeDY0LXNldHVwLmV4ZQpseDBWeE9ucVkyZHp3UTE5UVNCZU1BU2o0QXFRMkVkc1cwQ1lGYW1zNFJiYlFPV0M0Y3lyKzMzWjZGejNvOHhYUzBUd01DZXVOb0RHU0ZUYmVHYjRCZz09Cg==",
+      "url": "https://github.com/Dami1233/soundbox/releases/download/v1.4.0/Soundbox_1.4.0_x64-setup.exe"
+    },
+    "windows-x86_64-msi": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUZjIxczdWVUdkRjI2ZXF5NFZSbFR1WE1MZ0ljdEQvSDN6bCt3TkdrMGtKY3NOMGVUQjJRa1NoK0lWYll2WTBZaUtKeml5MXkzZG54emEyTGVBSllzTnpBQ3doYjYxV2dFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NzI5Mjg5CWZpbGU6U291bmRib3hfMS40LjBfeDY0X2VuLVVTLm1zaQpUMGlNdkpRMnZLQXJQQVk3U3RIcmFIQUM0VC9CVFU4cmdPRDJJWUpPUDk3dGZGbGgwSGtXaFJ2S1ZOdVRlcjlQSEFqTWE2d09pWDBScUludmU0WFJEZz09Cg==",
+      "url": "https://github.com/Dami1233/soundbox/releases/download/v1.4.0/Soundbox_1.4.0_x64_en-US.msi"
+    }
+  }
+}
