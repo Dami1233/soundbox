@@ -1,6 +1,6 @@
 [package]
 name = "soundbox"
-version = "1.4.0"
+version = "1.4.1"
 description = "Soundbox - a desktop music client"
 authors = ["you"]
 edition = "2021"
