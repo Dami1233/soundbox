@@ -15,7 +15,7 @@ Runbooks: `licensing/README.md` (license server, webhook, Fly.io deploy) · `doc
 
 - ✅ `TAURI_SIGNING_PRIVATE_KEY` repo secret set (minisign key `~/.tauri/soundbox-updater.key`, empty password — deliberately **no** `*_PASSWORD` secret)
 - ✅ Public half embedded in `src-tauri/tauri.conf.json` matches the secret (keyId `dfdb5b3b55419d17`, proven by verifying the CI-built MSI signature)
-- ☐ `ADMIN_TOKEN` — strong random token for the license server; set at deploy time, never in git
+- ✅ `ADMIN_TOKEN` — strong random token for the license server; set via `fly secrets set`, copy kept outside the repo (never in git)
 - ☐ `LS_API_KEY` — only if the webhook should email keys to buyers (`licensing/webhook.mjs`)
 - ☐ `WINGET_IDENTIFIER` — optional; unset = the winget job auto-skips (current behavior)
 - ☐ Final sweep: no keys/tokens/`.env*` committed
@@ -30,13 +30,13 @@ Runbooks: `licensing/README.md` (license server, webhook, Fly.io deploy) · `doc
 
 ## 4. Go-public gates (blockers before announcing)
 
-- ☐ Deploy the license server: Fly.io app `soundbox-license` (`licensing/fly.toml` + `Dockerfile`) — runbook in `licensing/README.md`
-- ☐ **Seed the server db with the existing keypair** — an empty volume makes the server mint a *new* keypair whose public key won't match the one embedded in released apps → every activation fails
-- ☐ Set `ADMIN_TOKEN` on the server; smoke-test issue → activate → revoke against prod (pattern: `licensing/smoke-test.mjs`)
-- ☐ Replace the store placeholder `https://example.com/buy-soundbox` in `src/ui/links.ts` and the release notes with the real Lemon Squeezy checkout URL
+- ✅ License server live: Fly.io app `soundbox-license` at `https://soundbox-license.fly.dev` (deployed 2026-09-14; runbook + Windows flyctl field notes in `licensing/README.md`)
+- ✅ **Server db seeded with the production keypair** — remote key verified byte-identical to the embedded `LICENSE_PUBLIC_KEY_B64`; a real activation envelope was issued by prod and verified against the embedded key (smoke key issued → activated → revoked)
+- ✅ `ADMIN_TOKEN` set on the server (copy stored outside the repo); admin routes verified 401 without it
+- ✅ Store link live: `LICENSE_PURCHASE_URL` → `https://milodami.lemonsqueezy.com/checkout/buy/83c11491-…` (in `src/internal/license.ts`; linked from the activation screen) — note: the shipped v1.4.0 binary still has the old placeholder; the real link rides the next release
 - ☐ Create the Lemon Squeezy product; add its webhook (`order_created`) with the signing secret → `licensing/webhook.mjs` behind TLS
 - ☐ Buy a real key through the store → activate it in the packaged app (proves the whole chain end-to-end)
 - ☐ Compiled default `LICENSE_SERVER_URL` = `https://soundbox-license.fly.dev` — deploy must land at that exact URL (this diff)
 - ☐ Windows Authenticode certificate — unsigned MSIs trigger SmartScreen warnings; strongly recommended before wide distribution
 - ☐ macOS notarization — unsigned builds require right-click → Open on macOS
-- ☐ Last sweep: `grep -r "example.com" src/ docs/` returns nothing
+- ☐ Last sweep: `grep -r "buy-soundbox" src/ docs/` returns nothing (plain `example.com` also matches intentional test fixtures)

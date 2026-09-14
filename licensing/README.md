@@ -79,7 +79,7 @@ an https:// URL.**
 **3. Point the activation screen at your store.** In `src/internal/license.ts`:
 
 ```ts
-export const LICENSE_PURCHASE_URL = "https://example.com/buy-soundbox";
+export const LICENSE_PURCHASE_URL = "https://milodami.lemonsqueezy.com/checkout/buy/83c11491-df70-499f-84fd-dcdf5a98b0d4";
 export const LICENSE_SUPPORT_EMAIL: string | null = null;
 ```
 
@@ -138,6 +138,24 @@ curl -i https://soundbox-license.fly.dev/admin/keys                          # -
 curl -i -H "Authorization: Bearer $ADMIN_TOKEN" https://soundbox-license.fly.dev/admin/keys
 ```
 
+**flyctl on Windows — field notes (all proven in the real deploy).**
+
+- flyctl installs to `%LOCALAPPDATA%\..\` i.e. `~\.fly\bin\flyctl.exe`; it is not on the Git-Bash
+  PATH until you reopen the shell — call it by full path.
+- `fly auth login` needs a real terminal. Run it in its own window
+  (`Start-Process -FilePath ...flyctl.exe -ArgumentList 'auth','login'`) and poll `fly auth whoami`.
+- Prefer `fly apps create soundbox-license` over `fly launch`: `launch` ignores the existing
+  `fly.toml` `app =` and regenerates the file from the *folder* name (which here would create an
+  app called `licensing` and clobber the config).
+- Non-interactive flyctl wants `--yes` on confirmations (`volumes create … --yes`).
+- Git Bash rewrites leading-`/` paths — prefix ssh/sftp calls with `MSYS_NO_PATHCONV=1` or
+  `/data/licenses.json` becomes `C:/Program Files/Git/data/licenses.json`.
+- `fly ssh console -C` runs **one** command; compound `cmd1 && cmd2` fails. An
+  `Error: The handle is invalid.` from console on Windows is often display-only — the command
+  may still have executed; verify through `fly sftp get` before retrying.
+- `fly sftp` refuses to overwrite existing files (by design). See the seed procedure below for
+  the upload-then-`mv` pattern that stays atomic.
+
 **Seed the keypair the released builds trust.** The volume starts empty, and the server
 generates a *fresh* keypair on first boot — whose public key does not match the one compiled
 into released Soundbox builds (`LICENSE_PUBLIC_KEY_B64`), so `/activate` would sign licenses
@@ -147,16 +165,21 @@ the app refuses. Reconcile either way:
   keypair the released builds already trust:
 
   ```bash
-  # one-time, after step 5: copy your local db onto the volume
+  # one-time, after step 5 — atomic replace, no missing-file window (the server re-reads
+  # the db on every request, so a missing file would crash it):
   cd licensing
-  fly sftp shell
-  #   sftp> cd /data
-  #   sftp> put data/licenses.json
-  #   sftp> exit
+  MSYS_NO_PATHCONV=1 fly sftp put data/licenses.json /data/licenses.json.incoming -a soundbox-license
+  MSYS_NO_PATHCONV=1 fly ssh console -a soundbox-license -C "mv /data/licenses.json.incoming /data/licenses.json"
+  # verify: pull it back and compare the public key with LICENSE_PUBLIC_KEY_B64 in license.rs
+  MSYS_NO_PATHCONV=1 fly sftp get /data/licenses.json /tmp/check.json -a soundbox-license
   ```
-  (Or `fly ssh console -C "cat > /data/licenses.json" < data/licenses.json` if your flyctl
-  forwards stdin.) From then on, issue keys on the Fly machine against the live db:
-  `fly ssh console -C "node /app/cli.mjs issue --licensee …"`.
+  If the db is ever deleted while the server is up, the machine crash-stops; recover with
+  `fly machine start <id> -a soundbox-license` (or let `auto_start_machines` wake it) — first
+  boot then mints a *wrong* keypair, so re-seed before trusting activations.
+  From then on, issue keys through the admin API or on the machine:
+  `curl -X POST …/admin/issue …` or `fly ssh console -a soundbox-license -C "node /app/cli.mjs issue --licensee …"`.
+  Revoking needs the explicit flag: `{"key":"…","revoked":true}` (the handler does
+  `Boolean(body.revoked)`, so omitting it silently un-revokes).
 - **Rotate to a fresh production keypair** (do this before real sales): run
   `generate-keys --force`, paste the new public key into `license.rs`, regenerate the
   `print-fixture` test, and ship it in the next release — then let the empty volume mint the
