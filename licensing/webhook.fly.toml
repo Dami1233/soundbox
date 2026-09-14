@@ -1,0 +1,41 @@
+# Fly.io config for the Soundbox Lemon Squeezy webhook (licensing/webhook.mjs).
+#
+# Separate app from soundbox-license: this one is internet-facing (Lemon Squeezy
+# POSTs here) and stateless, while the license server holds the private key db.
+# Reuses the same Dockerfile; the [processes] block swaps the command so the
+# container runs webhook.mjs instead of server.mjs.
+#
+# Secrets (set with `fly secrets set -a soundbox-webhook`, never in this file):
+#   LEMONSQUEEZY_WEBHOOK_SECRET — must match the secret entered in the Lemon
+#                                 Squeezy dashboard webhook settings
+#   ADMIN_TOKEN                 — same value as the license server's
+#
+# Optional secret: LS_API_KEY (Lemon Squeezy PAT) enables emailing the key to
+# the buyer; without it keys are still issued, just not emailed.
+#
+# Runbook: licensing/README.md → "Lemon Squeezy checkout webhook".
+
+app = "soundbox-webhook"
+primary_region = "jnb"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  HOST = "0.0.0.0" # behind Fly's TLS edge
+  PORT = "8790"
+  LICENSE_SERVER_URL = "https://soundbox-license.fly.dev"
+  ALLOWED_EVENTS = "order_created"
+  DEFAULT_PLAN = "perpetual"
+  DEFAULT_MAX_DEVICES = "1"
+
+[processes]
+  webhook = "node webhook.mjs"
+
+[http_service]
+  internal_port = 8790
+  force_https = true
+  auto_stop_machines = "off" # a missed first delivery delays the buyer's key
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["webhook"]

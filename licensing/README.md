@@ -256,6 +256,14 @@ is a **separate process** so it can be the only thing exposed to the internet �
 server stays on localhost holding the private key, and the webhook only talks to it with a
 bearer token.
 
+**Production (Fly):** `webhook.fly.toml` deploys this as a second app —
+`fly apps create soundbox-webhook`, `fly secrets set -a soundbox-webhook ADMIN_TOKEN=… LEMONSQUEEZY_WEBHOOK_SECRET=…`,
+`fly deploy --config webhook.fly.toml -a soundbox-webhook` — same image, `[processes]` swap to
+`node webhook.mjs`, no volume (stateless). Live URL: `https://soundbox-webhook.fly.dev`.
+Set the same secret string in the Lemon Squeezy dashboard (Settings → Webhooks → URL
+`https://soundbox-webhook.fly.dev/`, events `Order created`), and grab it from
+`fly secrets list`/your password manager if you lose it.
+
 Run it:
 
 ```bash
