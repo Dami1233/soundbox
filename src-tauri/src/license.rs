@@ -47,14 +47,16 @@ use tauri::{AppHandle, Manager, State};
 pub const PRODUCT_ID: &str = "soundbox-desktop";
 
 /*
- * The seller's license server. Change to your own host before shipping a release build.
+ * The seller's license server (production: Fly.io app `soundbox-license` — see
+ * licensing/README.md → “Production deploy (Fly.io)” for the deploy runbook).
  *
  *   - Release builds read this constant.
  *   - SOUNDBOX_LICENSE_SERVER overrides it at runtime (useful for pointing a build at a staging
  *     server without recompiling; harmless in release, since the server can only hand out
  *     licenses signed by the private key that matches LICENSE_PUBLIC_KEY_B64 below).
+ *   - If you change the Fly app name, keep this URL in sync (and re-release the client).
  */
-pub const LICENSE_SERVER_URL: &str = "https://licenses.example.com";
+pub const LICENSE_SERVER_URL: &str = "https://soundbox-license.fly.dev";
 
 /*
  * The Ed25519 public key (raw 32 bytes, standard base64) that signs every license.

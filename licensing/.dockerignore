@@ -1,0 +1,5 @@
+# The license database holds the PRIVATE signing key — never bake it into an image.
+# The volume is seeded at deploy time (see README → Production deploy).
+data/
+*.log
+README.md

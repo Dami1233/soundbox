@@ -40,6 +40,8 @@ or tampered license is rejected instantly because it cannot be signed without yo
 | `lib.mjs` | Shared logic: keypair handling, key generation, signing, activation. Zero deps. |
 | `server.mjs` | The HTTP license server (Node 18+, `node:http`, zero deps). |
 | `cli.mjs` | Seller CLI for keypair + key management, run on the server host. |
+| `webhook.mjs` | Standalone Lemon Squeezy checkout webhook (verify → `/admin/issue` → email key). |
+| `Dockerfile` / `fly.toml` / `.dockerignore` | Container + Fly.io config for `server.mjs` — see [Production deploy (Fly.io)](#production-deploy-flyio). |
 | `data/` | **Git-ignored.** `licenses.json` holds the private key and every issued key. Never commit or upload this folder. |
 | `README.md` | This file. |
 
@@ -65,8 +67,11 @@ pub const LICENSE_PUBLIC_KEY_B64: &str = "<paste here>";
 **2. Point the app at your server.** In `src-tauri/src/license.rs`:
 
 ```rust
-pub const LICENSE_SERVER_URL: &str = "https://licenses.example.com";
+pub const LICENSE_SERVER_URL: &str = "https://soundbox-license.fly.dev";
 ```
+
+That is the Fly.io app from [Production deploy (Fly.io)](#production-deploy-flyio) — rename the
+app, update this constant in the same commit, and re-release the client.
 
 `SOUNDBOX_LICENSE_SERVER` overrides it at runtime (handy for staging). **Release builds require
 an https:// URL.**
@@ -98,7 +103,83 @@ Environment:
 Deploy anywhere Node 18+ runs (VPS, Railway, Fly, Render, a $5 droplet — it is one small
 process with one JSON file). Put it behind **HTTPS** (Caddy/nginx/Cloudflare). Persist
 `LICENSE_DATA_DIR` somewhere durable; a fresh directory means a fresh keypair and every issued
-key dies with the old one. Back it up.
+key dies with the old one. Back it up. The production deploy used by the compiled default is
+Fly.io — see the next section.
+
+### Production deploy (Fly.io)
+
+`Dockerfile`, `fly.toml` and `.dockerignore` in this folder run the server on Fly.io. The
+compiled client default is already `https://soundbox-license.fly.dev` (see
+`src-tauri/src/license.rs`), so a release build activates against this app once it is up.
+
+```bash
+# 1. install flyctl (https://fly.io/docs/flyctl/) and log in
+fly auth login
+
+# 2. create the app from this folder, reading the Dockerfile + fly.toml
+cd licensing
+fly launch --no-deploy          # confirm app name soundbox-license; pick your nearest region
+
+# 3. 1 GB volume for the db + signing key — must exist before the first deploy,
+#    and its region must match the app's (jnb in fly.toml; change both together)
+fly volumes create soundbox_data --size 1 --region jnb
+
+# 4. admin token: the checkout webhook and your curl calls authenticate with this.
+#    The server refuses to enable /admin/* without it.
+fly secrets set ADMIN_TOKEN="$(openssl rand -base64 24)"
+#    Save it next to your other secrets — the webhook needs the same value.
+
+# 5. first deploy (boots the container; /data/licenses.json is created on first boot)
+fly deploy
+
+# 6. smoke test — /health public; /admin/* needs the token
+curl https://soundbox-license.fly.dev/health
+curl -i https://soundbox-license.fly.dev/admin/keys                          # -> 401
+curl -i -H "Authorization: Bearer $ADMIN_TOKEN" https://soundbox-license.fly.dev/admin/keys
+```
+
+**Seed the keypair the released builds trust.** The volume starts empty, and the server
+generates a *fresh* keypair on first boot — whose public key does not match the one compiled
+into released Soundbox builds (`LICENSE_PUBLIC_KEY_B64`), so `/activate` would sign licenses
+the app refuses. Reconcile either way:
+
+- **Keep current builds working (recommended to start).** Upload the existing database, whose
+  keypair the released builds already trust:
+
+  ```bash
+  # one-time, after step 5: copy your local db onto the volume
+  cd licensing
+  fly sftp shell
+  #   sftp> cd /data
+  #   sftp> put data/licenses.json
+  #   sftp> exit
+  ```
+  (Or `fly ssh console -C "cat > /data/licenses.json" < data/licenses.json` if your flyctl
+  forwards stdin.) From then on, issue keys on the Fly machine against the live db:
+  `fly ssh console -C "node /app/cli.mjs issue --licensee …"`.
+- **Rotate to a fresh production keypair** (do this before real sales): run
+  `generate-keys --force`, paste the new public key into `license.rs`, regenerate the
+  `print-fixture` test, and ship it in the next release — then let the empty volume mint the
+  matching keypair on first boot. Already-activated copies keep working offline; new
+  activations need the new build.
+
+**Ops notes.**
+
+- Key management against the live db (no local copy drift):
+  `fly ssh console -C "node /app/cli.mjs list"`, `… issue --licensee x@y`, `… revoke KEY`,
+  `… deactivate KEY <machineId>`.
+- Back up `/data/licenses.json` regularly — it IS the signing key plus every issued key:
+  `fly sftp shell` (`cd /data`, `get licenses.json`) or
+  `fly ssh console -C "cat /data/licenses.json" > backup.json`. Keep it with the updater
+  signing key; losing it invalidates every key.
+- The checkout webhook (`webhook.mjs`) can run anywhere — its own Fly app, a VPS, or localhost
+  next to the store — pointed at the production server with
+  `LICENSE_SERVER_URL=https://soundbox-license.fly.dev` and the same `ADMIN_TOKEN`. Only the
+  `/webhook` path needs to be public on that process.
+- Custom domain (optional): `fly certs add licenses.yourdomain.com`, then update
+  `LICENSE_SERVER_URL` in `license.rs` and re-release.
+- Cost: one tiny always-on machine (`min_machines_running = 1` in `fly.toml`); a license
+  server must answer whenever a user activates. Suspend it only if you ship trial-only builds.
 
 ## Issuing and managing keys
 
@@ -314,7 +395,7 @@ link of the installer (NSIS preferred, matching `updaterJsonPreferNsis: true`).
 | `src-tauri/tauri.conf.json` → `plugins.updater.endpoints` | ✅ set to `Dami1233/soundbox` (both URLs) |
 | `src/internal/updateChecker.ts`, `src/ui/links.ts`, `src-tauri/src/discord_rpc.rs` | ✅ set to `Dami1233/soundbox` (updater, in-app links, Discord button) |
 | `src/internal/releaseNote.ts`, `mini.html` | ✅ release note + mini-player title rewritten for Soundbox |
-| `src-tauri/src/license.rs` → `LICENSE_SERVER_URL` | `https://licenses.example.com` → your real server |
+| `src-tauri/src/license.rs` → `LICENSE_SERVER_URL` | ✅ set to `https://soundbox-license.fly.dev` (Fly.io app `soundbox-license`) |
 | `src/internal/license.ts` | `LICENSE_PURCHASE_URL` / `LICENSE_SUPPORT_EMAIL` → your store / inbox |
 | `.github/workflows/release.yml` | AUR metadata + optional `WINGET_IDENTIFIER` → your packages |
 | Icon / window art | ✅ replaced with the Soundbox mark (`src-tauri/icons/source.svg`) |

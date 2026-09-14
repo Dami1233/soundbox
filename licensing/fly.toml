@@ -1,0 +1,32 @@
+# Fly.io config for the Soundbox license server (licensing/server.mjs).
+#
+# Runbook: licensing/README.md → "Production deploy (Fly.io)".
+#
+# If you change `app`, also update LICENSE_SERVER_URL in src-tauri/src/license.rs
+# and re-release the client — the compiled default must point at this app.
+app = "soundbox-license"
+
+# Johannesburg — closest Fly region to Lagos. Pick whichever Fly region is nearest
+# to your buyers when `fly launch` prompts you; there is no wrong answer for a
+# ~1 KB JSON round trip, latency barely matters here.
+primary_region = "jnb"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  HOST = "0.0.0.0" # behind Fly's TLS edge
+  PORT = "8787"
+  LICENSE_DATA_DIR = "/data" # persisted volume; never rely on the container fs
+
+[http_service]
+  internal_port = 8787
+  force_https = true
+  auto_stop_machines = "off" # a license server must answer whenever a user activates
+  auto_start_machines = true
+  min_machines_running = 1
+
+# One-time: fly volumes create soundbox_data --size 1 --region jnb
+[[mounts]]
+  source = "soundbox_data"
+  destination = "/data"
