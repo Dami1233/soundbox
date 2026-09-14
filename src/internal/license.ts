@@ -6,7 +6,7 @@
 import { invoke } from "@tauri-apps/api/core";
 
 /** Where buyers purchase a key — point this at your store checkout before shipping. */
-export const LICENSE_PURCHASE_URL = "https://example.com/buy-soundbox";
+export const LICENSE_PURCHASE_URL = "https://milodami.lemonsqueezy.com/checkout/buy/83c11491-df70-499f-84fd-dcdf5a98b0d4";
 
 /** Optional support address shown next to the purchase link; null hides it. */
 export const LICENSE_SUPPORT_EMAIL: string | null = null;

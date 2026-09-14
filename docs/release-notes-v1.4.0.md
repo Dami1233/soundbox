@@ -4,15 +4,12 @@ This is the first release of **Soundbox** — a standalone desktop client for Yo
 forked from the Zuno project with its own identity, its own update channel, and a
 license-based activation system.
 
-> ⚠️ Before publishing this release, replace the store link below (`https://example.com/buy-soundbox`)
-> with your real checkout page.
-
 ## What's new
 
 - **A new name and look** — Soundbox ships with its own icon, branding, and release channel.
   Updates now come from Soundbox's own releases, not the upstream Zuno project.
 - **License activation** — you get a 7-day free trial on first launch; after that the app
-  unlocks with the license key from your purchase: [buy a key](https://example.com/buy-soundbox).
+  unlocks with the license key from your purchase: [buy a key](https://milodami.lemonsqueezy.com/checkout/buy/83c11491-df70-499f-84fd-dcdf5a98b0d4).
   Keys are bound to one machine and never expire.
 - **Accounts** — switch between multiple YouTube Music accounts instantly, no signing out required.
 - **Sound** — pick your exact output device (real speaker/headphone names on Linux too), plus a
