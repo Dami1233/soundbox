@@ -37,7 +37,7 @@ jobs:
       github.event_name == 'workflow_dispatch'
       || github.event.workflow_run.conclusion == 'success'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # `workflow_run` checks out the default branch head by default, which is usually but
           # not always the commit that was released.
